@@ -7,16 +7,30 @@ const alert = document.querySelector(".alert");
 
 let tareas = [];
 
+
+document.addEventListener("DOMContentLoaded",()=>{ //El DOMContentLoadedevento se activa cuando el documento HTML se ha analizado por completo y todos los scripts diferidos 
+
+  localStorage.getItem("tareas");
+  
+  if(localStorage.getItem("tareas")){
+
+    tareas = JSON.parse(localStorage.getItem("tareas")); // pasando de JSON a Array
+    pintarTarea();//pintando las tareas almacenadas
+  }
+
+});
+
 document.addEventListener("click", (event) =>{
   
     console.log(event.target);
 
+    if(event.target.matches(".eliminar")){
 
-
+        tareas = tareas.filter(item => item.id !== event.target.dataset.id);
+        pintarTarea();
+    }
 
 });
-
-
 
 
 
@@ -56,6 +70,8 @@ const agregarTodo = (todo) => {
 }
 
 const pintarTarea = () => {
+
+    localStorage.setItem('tareas', JSON.stringify(tareas));
 
     pintarToDo.textContent = "";
     const fragment = document.createDocumentFragment();
